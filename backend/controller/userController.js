@@ -46,3 +46,23 @@ export const register = async(req,res) => {
         })
     }
 }
+
+export const login = async(req,res) => {
+    try {
+        const {email,password} = req.body;
+        if(!email || !password){
+            return res.status(400).json({
+                message:"please fill login details"
+            })
+        }
+        const existUser = await User.findOne({email})
+        if(!existUser){
+            return res.status(400).json({
+                message:"User doesn't exist please register."
+            }) 
+        }
+        
+    } catch (error) {
+        
+    }
+}
