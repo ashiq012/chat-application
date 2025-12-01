@@ -1,5 +1,6 @@
 import {User} from '../models/userModel.js'
 import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken"
 export const register = async(req,res) => {
     try {
         const {fullname , username , password , confirmPassword , gender ,} = req.body
@@ -49,8 +50,8 @@ export const register = async(req,res) => {
 
 export const login = async(req,res) => {
     try {
-        const {email,password} = req.body;
-        if(!email || !password){
+        const {username,password} = req.body;
+        if(!username || !password){
             return res.status(400).json({
                 message:"please fill login details"
             })
@@ -61,6 +62,19 @@ export const login = async(req,res) => {
                 message:"User doesn't exist please register."
             }) 
         }
+        const passMatch = await bcrypt.compare(password,existUser.password);
+        if(!passMatch){
+            return res.status(400).json({
+                message:"incorrect password!"
+            })
+        }
+        //after pass match gen token
+        const tokenData = {
+            userId:existUser._id
+        }
+        const token = await jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
+            expiresIn:'1d'
+        })
         
     } catch (error) {
         
