@@ -1,6 +1,7 @@
 import {User} from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
+import cookie from 'cookie'
 export const register = async(req,res) => {
     try {
         const {fullname , username , password , confirmPassword , gender ,} = req.body
@@ -56,7 +57,7 @@ export const login = async(req,res) => {
                 message:"please fill login details"
             })
         }
-        const existUser = await User.findOne({email})
+        const existUser = await User.findOne({username})
         if(!existUser){
             return res.status(400).json({
                 message:"User doesn't exist please register."
@@ -75,8 +76,18 @@ export const login = async(req,res) => {
         const token = await jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
             expiresIn:'1d'
         })
+        return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpOnly:true,sameSite:'strict'}).json({
+            _id:existUser._id,
+            username:existUser.username,
+            fullname:existUser.fullname,
+            profilePhoto:existUser.profilePhoto
+        })
         
     } catch (error) {
-        
+        console.log(error);
+        return res.status(400).json({
+            success:false,
+            message:error
+        })
     }
 }
