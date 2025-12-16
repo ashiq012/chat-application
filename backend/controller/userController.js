@@ -1,7 +1,6 @@
 import {User} from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
-import cookie from 'cookie'
 export const register = async(req,res) => {
     try {
         const {fullname , username , password , confirmPassword , gender ,} = req.body
@@ -73,15 +72,21 @@ export const login = async(req,res) => {
         const tokenData = {
             userId:existUser._id
         }
-        const token = await jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
+        const token = jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
             expiresIn:'1d'
         })
-        return res.status(200).cookie("token",token,{maxAge:1*24*60*60*1000,httpOnly:true,sameSite:'strict'}).json({
-            _id:existUser._id,
-            username:existUser.username,
-            fullname:existUser.fullname,
-            profilePhoto:existUser.profilePhoto
-        })
+        return res.status(200).cookie("token",token,
+            {
+                maxAge:1*24*60*60*1000,
+                httpOnly:true,
+                sameSite:'strict'
+            }).json(
+                {
+                    _id:existUser._id,
+                    username:existUser.username,
+                    fullname:existUser.fullname,
+                    profilePhoto:existUser.profilePhoto
+                })
         
     } catch (error) {
         console.log(error);
@@ -89,5 +94,15 @@ export const login = async(req,res) => {
             success:false,
             message:error
         })
+    }
+}
+
+export const logout = (req,res) => {
+    try {
+        return res.status(200).cookie("token",'',{maxAge:0}).json({
+            message:"Log out successfully."
+        })
+    } catch (error) {
+        console.log(error)
     }
 }
