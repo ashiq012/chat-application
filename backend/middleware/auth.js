@@ -14,8 +14,7 @@ const isAuthenticated = async(req,res,next) => {
                 message:"token is invalid"
             })
         }
-        res.user = decode.userId;
-        console.log(res.user)
+        req.user = decode.userId;
         next();
     } catch (error) {
         console.log(error)
