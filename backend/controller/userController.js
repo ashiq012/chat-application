@@ -1,6 +1,7 @@
 import {User} from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
+import cookie from 'cookie'
 export const register = async(req,res) => {
     try {
         const {fullname , username , password , confirmPassword , gender ,} = req.body
@@ -69,10 +70,11 @@ export const login = async(req,res) => {
             })
         }
         //after pass match gen token
+        //tokendata contains payload user data
         const tokenData = {
             userId:existUser._id
         }
-        const token = jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
+        const token =  jwt.sign(tokenData,process.env.JWT_SECRET_KEY,{
             expiresIn:'1d'
         })
         return res.status(200).cookie("token",token,
@@ -101,6 +103,21 @@ export const logout = (req,res) => {
     try {
         return res.status(200).cookie("token",'',{maxAge:0}).json({
             message:"Log out successfully."
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+//all other user 
+export const getOtherUser = async(req,res) => {
+    try {
+        const loggedInUser = req.user;
+        const otherUser  = await User.find({_id:{$ne:loggedInUser}}).select("-password");
+        return res.status(200).json({
+            success:true,
+            message:"All Existing User Fetch",
+            users:otherUser
         })
     } catch (error) {
         console.log(error)
