@@ -1,18 +1,38 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 function Signin() {
-    const [user, setUser] = useState({
-      username: "",
-      password: ""
-    });
-    const onSubmitHandler = (e) => {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     console.log(user);
+    try {
+      const payload = {
+        username: user.username,
+        password: user.password,
+      };
+      const res = await axios.post(
+        `http://localhost:3000/api/v1/user/login`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        },
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error.message);
+    }
     setUser({
       username: "",
-      password: ""
-    })
+      password: "",
+    });
   };
   return (
     <div className="min-h-screen flex items-center justify-center  from-purple-500 via-pink-500 to-indigo-600">
@@ -49,7 +69,10 @@ function Signin() {
               />
             </div>
             <p className="text-center text-white my-2">
-              Don't have an account?  <Link to="/signup" className="underline text-blue-300">Sign up</Link>
+              Don't have an account?{" "}
+              <Link to="/signup" className="underline text-blue-300">
+                Sign up
+              </Link>
             </p>
 
             <button

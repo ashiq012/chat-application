@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 function Signup() {
   const [user, setUser] = useState({
     fullName: "",
@@ -10,18 +11,38 @@ function Signup() {
   });
 
   const onGenderChange = (gender) => {
-    setUser({...user,gender})
-  }
-  const onSubmitHandler = (e) => {
+    setUser({ ...user, gender });
+  };
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
+    try {
+      const payload = {
+        fullname: user.fullName,
+        username: user.username,
+        password: user.password,
+        confirmPassword: user.confirmPassword,
+        gender: user.gender,
+      };
+      const res = await axios.post(
+        `http://localhost:3000/api/v1/user/register`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        },
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
     setUser({
       fullName: "",
       username: "",
       password: "",
       confirmPassword: "",
       gender: "",
-    })
+    });
   };
   return (
     <div className="min-h-screen flex items-center justify-center  from-purple-500 via-pink-500 to-indigo-600">
@@ -88,22 +109,24 @@ function Signup() {
 
             <div className="flex gap-6 my-4 text-white">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input 
-                type="radio" 
-                checked = {user.gender === "male"}
-                onChange={()=>onGenderChange("male")}
-                name="gender" 
-                className="radio" />
+                <input
+                  type="radio"
+                  checked={user.gender === "male"}
+                  onChange={() => onGenderChange("male")}
+                  name="gender"
+                  className="radio"
+                />
                 Male
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
-                <input 
-                type="radio"
-                checked = {user.gender === "female"}
-                onChange={()=>onGenderChange("female")}
-                name="gender" 
-                className="radio" />
+                <input
+                  type="radio"
+                  checked={user.gender === "female"}
+                  onChange={() => onGenderChange("female")}
+                  name="gender"
+                  className="radio"
+                />
                 Female
               </label>
             </div>
