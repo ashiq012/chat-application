@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 function Signin() {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     console.log(user);
@@ -25,9 +27,13 @@ function Signin() {
           withCredentials: true,
         },
       );
-      console.log(res);
+      if(res.data.success){
+        navigate("/");
+        toast.success(res.data.message);
+      }
     } catch (error) {
       console.log(error.message);
+      toast.error(error.response?.data?.message || "Something went wrong ❌");
     }
     setUser({
       username: "",

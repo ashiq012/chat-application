@@ -7,18 +7,21 @@ export const register = async(req,res) => {
         const {fullname , username , password , confirmPassword , gender ,} = req.body
         if(!fullname || !username || !password || !confirmPassword || !gender){
             return res.status(400).json({
-                message : "all field are required"
+                message : "all field are required",
+                success:false
             })
         }
         if(password !== confirmPassword){
             return res.status(400).json({
-                message:"please enter correct password"
+                message:"please enter correct password",
+                success:false
             })
         }
         const user = await User.findOne({username})
         if(user){
             return res.status(400).json({
-                message:"user already exist"
+                message:"user already exist",
+                success:false
             })
         }
         //password hash 
@@ -35,16 +38,19 @@ export const register = async(req,res) => {
         })
         return res.status(200).json({
             message:"user register successfully",
+            success:true
         })
         } catch (error) {
             return res.status(400).json({
-                message:error
+                success:false,
+                message:error.message
             })
         }
     } catch (error) {
         return res.status(400).json({
             message:"failed to register try again",
-            error:error
+            success:false,
+            error:error.message
         })
     }
 }
@@ -54,19 +60,22 @@ export const login = async(req,res) => {
         const {username,password} = req.body;
         if(!username || !password){
             return res.status(400).json({
-                message:"please fill login details"
+                message:"please fill login details",
+                success:false
             })
         }
         const existUser = await User.findOne({username})
         if(!existUser){
             return res.status(400).json({
-                message:"User doesn't exist please register."
+                message:"User doesn't exist please register.",
+                success:false
             }) 
         }
         const passMatch = await bcrypt.compare(password,existUser.password);
         if(!passMatch){
             return res.status(400).json({
-                message:"incorrect password!"
+                message:"incorrect password!",
+                success:false
             })
         }
         //after pass match gen token
@@ -87,7 +96,9 @@ export const login = async(req,res) => {
                     _id:existUser._id,
                     username:existUser.username,
                     fullname:existUser.fullname,
-                    profilePhoto:existUser.profilePhoto
+                    profilePhoto:existUser.profilePhoto,
+                    message:"login successfully",
+                    success:true
                 })
         
     } catch (error) {
@@ -102,10 +113,14 @@ export const login = async(req,res) => {
 export const logout = (req,res) => {
     try {
         return res.status(200).cookie("token",'',{maxAge:0}).json({
-            message:"Log out successfully."
+            message:"Log out successfully.",
+            success:true
         })
     } catch (error) {
-        console.log(error)
+        return res.status(400).json({
+            success:false,
+            message:error.message
+        })
     }
 }
 

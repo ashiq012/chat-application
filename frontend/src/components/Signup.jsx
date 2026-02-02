@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 function Signup() {
   const [user, setUser] = useState({
     fullName: "",
@@ -9,7 +10,7 @@ function Signup() {
     confirmPassword: "",
     gender: "",
   });
-
+  const navigate = useNavigate();
   const onGenderChange = (gender) => {
     setUser({ ...user, gender });
   };
@@ -33,8 +34,13 @@ function Signup() {
           withCredentials: true,
         },
       );
+      if (res.data.success) {
+        navigate("/login");
+        toast.success(res.data.message);
+      }
     } catch (error) {
       console.log(error.message);
+      toast.error(error.response?.data?.message || "Something went wrong ❌");
     }
     setUser({
       fullName: "",
