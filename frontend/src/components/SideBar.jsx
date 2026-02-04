@@ -4,7 +4,7 @@ import OtherUsers from "./OtherUsers";
 
 function SideBar() {
   return (
-    <div className="p-4 border-r border-slate-500 flex-col ">
+    <div className="p-4 border-r border-slate-500 flex flex-col ">
       <form action="" className="flex items-center gap-2">
         <input
           type="text"
@@ -17,6 +17,9 @@ function SideBar() {
       </form>
       <div className="divider px-2"></div>
       <OtherUsers />
+      <div className="flex justify-start mt-auto ">
+        <button className="btn btn-sm rounded-xl">Logout</button>
+      </div>
     </div>
   );
 }
