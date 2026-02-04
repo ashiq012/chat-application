@@ -3,11 +3,14 @@ import { Link ,useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../redux/userSlice";
 function Signin() {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -27,13 +30,14 @@ function Signin() {
           withCredentials: true,
         },
       );
-      if(res.data.success){
         navigate("/");
+        console.log(res.data);
+        dispatch(setAuthUser(res.data))
         toast.success(res.data.message);
-      }
+      
     } catch (error) {
-      console.log(error.message);
       toast.error(error.response?.data?.message || "Something went wrong ❌");
+      console.log(error.message);
     }
     setUser({
       username: "",
