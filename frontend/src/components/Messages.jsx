@@ -1,0 +1,12 @@
+import React from 'react'
+import Message from './Message'
+
+function Messages() {
+  return (
+    <div className='flex-1 px-4 overflow-auto'>
+      <Message/>
+    </div>
+  )
+}
+
+export default Messages
