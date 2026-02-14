@@ -11,7 +11,7 @@ function OtherUsers() {
 
 
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto flex-1">
       {
         otherUsers?.map((user)=>{
           return (

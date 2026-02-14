@@ -14,7 +14,6 @@ function Signin() {
   const navigate = useNavigate();
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
     try {
       const payload = {
         username: user.username,
@@ -31,7 +30,6 @@ function Signin() {
         },
       );
         navigate("/");
-        console.log(res.data);
         dispatch(setAuthUser(res.data))
         toast.success(res.data.message);
       
