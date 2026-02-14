@@ -1,24 +1,35 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  authUser: JSON.parse(localStorage.getItem("authUser")) || null,
+  otherUsers: null,
+  selectedUser: null,
+};
 
 const userSlice = createSlice({
-    name:"user",
-    initialState:{
-        authUser:null,
-        otherUsers:null,
-        selectedUser:null
-    },
-    reducers:{
-        setAuthUser:(state,action) => {
-            state.authUser = action.payload;
-        },
-        setOtherUsers:(state,action) => {
-            state.otherUsers = action.payload;
-        },
-        setSelectedUser:(state,action) => {
-            state.selectedUser = action.payload
-        }
+  name: "user",
+  initialState,
+  reducers: {
+    setAuthUser: (state, action) => {
+      state.authUser = action.payload;
+      if (action.payload) {
+        localStorage.setItem("authUser", JSON.stringify(action.payload));
+      } else {
+        localStorage.removeItem("authUser");
+      }
     },
 
-})
-export const {setAuthUser,setOtherUsers ,setSelectedUser} = userSlice.actions;
+    setOtherUsers: (state, action) => {
+      state.otherUsers = action.payload;
+    },
+
+    setSelectedUser: (state, action) => {
+      state.selectedUser = action.payload;
+    },
+  },
+});
+
+export const { setAuthUser, setOtherUsers, setSelectedUser } =
+  userSlice.actions;
+
 export default userSlice.reducer;
