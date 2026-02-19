@@ -9,7 +9,7 @@ function Message({ message }) {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
-  if (!authUser) return null; // 🛑 protect from null crash
+  if (!authUser) return null;
 
   const isSender = authUser._id === message.senderId;
 

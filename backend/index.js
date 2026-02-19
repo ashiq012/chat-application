@@ -5,9 +5,8 @@ import router from './routes/userRoutes.js';
 import messageRoute from './routes/messageRoute.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
+import {server ,app} from './socketio/socket.js'
 dotenv.config(); 
-
-const app = express();
 const PORT = process.env.PORT || 4000 ;
 
 //cookie parse 
@@ -29,6 +28,6 @@ app.use('/api/v1/message',messageRoute)
 // database call 
 connectDB();
 
-app.listen(PORT , () => {
+server.listen(PORT , () => {
     console.log("server started at",PORT)
 })
