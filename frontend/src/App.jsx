@@ -30,13 +30,13 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     if (authUser) {
-      const newSocket = io("http://localhost:3000",{
+      const socket = io("http://localhost:3000",{
         query:{
           userId:authUser._id
         }
       });
-      dispatch(setSocket(newSocket))
-      newSocket.on("getOnlineUsers",(users)=>{
+      dispatch(setSocket(socket))
+      socket.on("getOnlineUsers",(users)=>{
         dispatch(setOnlineUser(users))
       })
       return ()=>socket.close()

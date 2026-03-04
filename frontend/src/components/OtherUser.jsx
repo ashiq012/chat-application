@@ -7,7 +7,8 @@ function OtherUser(props) {
   const selectedUserHandler = (user) => {
     dispatch(setSelectedUser(user));
   };
-  const { selectedUser } = useSelector(store => store.user);
+  const { selectedUser , onlineUser} = useSelector(store => store.user);
+  const isOnline = onlineUser?.includes(user._id);
   return (
     <div>
       <div
@@ -16,7 +17,7 @@ function OtherUser(props) {
           selectedUser?._id === user._id ? "bg-zinc-400" : ""
         }`}
       >
-        <div className="avatar avatar-online">
+        <div className={`avatar ${isOnline ? "avatar-online" : ""}`}>
           <div className="w-12 rounded-full overflow-hidden">
             <img src={user?.profilePhoto} />
           </div>

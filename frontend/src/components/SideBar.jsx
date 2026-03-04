@@ -19,6 +19,7 @@ function SideBar() {
       dispatch(setSelectedUser(null));
       dispatch(setMessages(null));
       navigate("/login");
+      window.location.reload();
     } catch (error) {
       return error.response.data.message;
     }
