@@ -6,6 +6,7 @@ import messageRoute from './routes/messageRoute.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors';
 import {server ,app} from './socketio/socket.js'
+import path from 'path';
 dotenv.config(); 
 const PORT = process.env.PORT || 4000 ;
 
@@ -27,7 +28,11 @@ app.use('/api/v1/message',messageRoute)
 
 // database call 
 connectDB();
-
+const _dirname = path.resolve();
+app.use(express.static(path.join(_dirname,'/frontend/dist')))
+app.use((req,res)=>{
+    res.sendFile(path.resolve(_dirname,'frontend','dist','index.html'))
+})
 server.listen(PORT , () => {
     console.log("server started at",PORT)
 })
