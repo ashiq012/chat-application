@@ -25,7 +25,7 @@ function Signup() {
         gender: user.gender,
       };
       const res = await axios.post(
-        `http://localhost:3000/api/v1/user/register`,
+        `https://chat-application-f2wz.onrender.com/api/v1/user/register`,
         payload,
         {
           headers: {

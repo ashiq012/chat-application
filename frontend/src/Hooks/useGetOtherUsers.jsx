@@ -9,7 +9,7 @@ function useGetOtherUsers() {
       try {
         axios.defaults.withCredentials = true;
         const res = await axios.get(
-          `http://localhost:3000/api/v1/user/getalluser`,
+          `https://chat-application-f2wz.onrender.com/api/v1/user/getalluser`,
         );
         dispatch(setOtherUsers(res.data.users));
       } catch (error) {

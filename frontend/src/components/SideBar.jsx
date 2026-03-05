@@ -21,7 +21,7 @@ function SideBar() {
 
   const logout = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/v1/user/logout");
+      const res = await axios.get("https://chat-application-f2wz.onrender.com/api/v1/user/logout");
       toast.success(res.data.message);
       dispatch(setAuthUser(null));
       dispatch(setOtherUsers(null));

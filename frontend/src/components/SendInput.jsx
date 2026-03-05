@@ -12,7 +12,7 @@ function SendInput() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:3000/api/v1/message/send/${selectedUser._id}`,
+        `https://chat-application-f2wz.onrender.com/api/v1/message/send/${selectedUser._id}`,
         { message },
         {
           headers: {

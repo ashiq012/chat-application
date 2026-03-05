@@ -20,7 +20,7 @@ function Signin() {
         password: user.password,
       };
       const res = await axios.post(
-        `http://localhost:3000/api/v1/user/login`,
+        `https://chat-application-f2wz.onrender.com/api/v1/user/login`,
         payload,
         {
           headers: {

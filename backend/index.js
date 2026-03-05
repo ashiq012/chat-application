@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 //cors fixing
 const corsOption = {
-    origin:'http://localhost:5173',
+    origin:'https://chat-application-f2wz.onrender.com/',
     credentials:true,
 }
 app.use(cors(corsOption));

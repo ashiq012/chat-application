@@ -11,7 +11,7 @@ function useGetMessages() {
       try {
         axios.defaults.withCredentials = true;
         const res = await axios.get(
-          `http://localhost:3000/api/v1/message/${selectedUser?._id}`
+          `https://chat-application-f2wz.onrender.com/api/v1/message/${selectedUser?._id}`
         );
         dispatch(setMessages(res.data?.conversation?.message))
       } catch (error) {
