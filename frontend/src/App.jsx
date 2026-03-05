@@ -42,7 +42,7 @@ function App() {
       return ()=>socket.close()
     }else{
       if(socket){
-        socket.disconnet();
+        socket.disconnect();
         dispatch(setSocket(null))
       }
     }

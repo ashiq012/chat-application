@@ -28,7 +28,7 @@ function SendInput() {
     setMessage('')
   };
   return (
-    <form className="my-2 mx-8" onSubmit={handleSubmit}>
+    <form className="my-2 mx-2 md:mx-8" onSubmit={handleSubmit}>
       <div className="relative w-full">
         <input
         value={message}

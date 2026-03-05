@@ -36,7 +36,11 @@ function Message({ message }) {
           <time className="text-xs opacity-50 text-black">{dateAndTime}</time>
         </div>
 
-        <div className="chat-bubble">{message.message}</div>
+        <div
+          className={`chat-bubble ${!isSender ? "bg-gray-200 text-black" : ""}`}
+        >
+          {message.message}
+        </div>
       </div>
     </div>
   );

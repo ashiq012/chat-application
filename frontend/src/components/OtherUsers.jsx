@@ -3,23 +3,21 @@ import OtherUser from "./OtherUser";
 import useGetOtherUsers from "../Hooks/useGetOtherUsers";
 import { useSelector } from "react-redux";
 
-function OtherUsers() {
+function OtherUsers({ search }) {
   useGetOtherUsers();
-  const {otherUsers} = useSelector(store=>store.user)
-  if(!otherUsers) return;
-//this called early return in react when we dont have data to render the component and we want to avoid rendering the component until we have the data to render it
+  const { otherUsers } = useSelector((store) => store.user);
 
+  if (!otherUsers) return;
+
+  const filteredUsers = otherUsers.filter((user) =>
+    user.fullname.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="overflow-auto flex-1">
-      {
-        otherUsers?.map((user)=>{
-          return (
-            <OtherUser key={user._id} user={user}/>
-          )
-        })
-      }
-      
+      {filteredUsers.map((user) => {
+        return <OtherUser key={user._id} user={user} />;
+      })}
     </div>
   );
 }
